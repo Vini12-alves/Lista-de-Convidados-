@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Lista de Convidados</title>
+    </head>
+    <style>input[type=text] {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+      }
+      #lista{
+          font-size: large;
+          padding: 20px 400px;
+          
+          }
+      a:link, a:visited {
+        background-color: #08fcfc;
+        color: rgb(248, 244, 244);
+
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        }
+
+      #botao{
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            }
+
+a:hover, a:active {
+  background-color: red;
+}
+      
+      </style>
+   
+    <body style="background-color:Tomato;">
+       <div id = "app">
+         <h1><center>Lista de convidados</center></h1>
+
+         <ul id="lista">
+             
+        </ul>
+       
+        <input id="campoNome" type ="text" placeholder="Digite o nome do convidado"/>
+        <br>
+        <input id="campoIdade" type= "text" placeholder="Digite a Idade"/>
+        <br>
+        <input id="campoCpf" type="text" placeholder="Digite o CPF"/>
+        <br>
+
+        <button id= "botao">Cadastrar</button>
+
+    
+        </div>
+
+       <script type="text/javascript">
+
+        var convidados = JSON.parse(localStorage.getItem("convidados")) || [];
+
+        // Pega elementos do HTML
+        var elLista =document.getElementById("lista");
+
+        var elCampoNome =document.getElementById("campoNome");
+
+        var elCampoIdade = document.getElementById("campoIdade");
+
+        var elCampoCpf = document.getElementById("campoCpf");
+
+        var elBotao =document.getElementById("botao"); 
+        
+
+        // ativa o botao e joga os valores dentro do array convidados 
+        elBotao.onclick= function(){
+        var nome = elCampoNome.value;
+        var idade = elCampoIdade.value;
+        var cpf = elCampoCpf.value;
+        convidados.push({nome: nome, idade: idade, cpf: cpf});
+        
+       
+        //limpa o campo
+        elCampoNome.value ="";
+        elCampoIdade.value="";
+        elCampoCpf.value = "";
+        
+       
+
+        salvarConvidados();
+        listaConvidados();
+    };
+
+    
+
+    
+    // Salvas as informaçois ao reeniciar a tela
+    function salvarConvidados(){
+        localStorage.setItem("convidados", JSON.stringify(convidados));
+    };
+        
+    function listaConvidados(){
+        
+        elLista.innerHTML= "";
+
+            for(const convidado of convidados){
+                var elConvidado = document.createElement('li');
+                var elNome = document.createTextNode(convidado.nome);
+               
+                var elConvidado = document.createElement('li');
+                var elIdade = document.createTextNode(convidado.idade);
+
+                var elConvidado = document.createElement('li');
+                var elCpf= document.createTextNode(convidado.cpf);
+                
+                var elExcluir = document.createElement("a");
+                elExcluir.setAttribute("href", "#");
+                elExcluir.onclick= function(){
+                    convidados = convidados.filter(function(item){
+                        return item.nome !== convidado.nome;
+
+                    });
+
+                salvarConvidados();
+                listaConvidados();
+               
+                };
+
+                var espacoNome = document.createTextNode("Nome- ");
+                var espacoIdade = document.createTextNode(".  Idade- ");
+                var espacoCpf = document.createTextNode(". CPF -  ");
+ 
+                var elExcluirTexto = document.createTextNode("  Excluir");
+               
+                elExcluir.appendChild(elExcluirTexto);
+
+                elConvidado.appendChild(espacoNome);
+
+                elConvidado.appendChild(elNome);
+
+                elConvidado.appendChild(espacoIdade);
+
+                elConvidado.appendChild(elIdade);
+
+                elConvidado.appendChild(espacoCpf);
+
+                elConvidado.appendChild(elCpf);
+
+                elConvidado.appendChild(elExcluir);
+
+                elLista.appendChild(elConvidado);
+             
+
+        };
+    };
+
+    listaConvidados();
+
+
+    
+        </script>
+    
+    </body>
+</html>
